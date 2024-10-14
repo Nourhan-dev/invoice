@@ -85,25 +85,30 @@ class InvoiceController extends Controller
             'description.*' => 'required|string|max:255',
             'amount.*' => 'required|numeric',
         ]);
-
-        // Create client record
-        $client = Client::create([
-            'name' => $validated['client_name'],
-            'phone' => $validated['client_phone'],
-            'address' => $validated['client_address'],
-            'email' => $validated['client_email'],
-        ]);
-
+    
+        // Check if the client already exists based on email (you can change it to phone if needed)
+        $client = Client::where('email', $validated['client_email'])->first();
+    
+        // If client does not exist, create a new one
+        if (!$client) {
+            $client = Client::create([
+                'name' => $validated['client_name'],
+                'phone' => $validated['client_phone'],
+                'address' => $validated['client_address'],
+                'email' => $validated['client_email'],
+            ]);
+        }
+    
         // Calculate total sum
         $sum = collect($request->amount)->sum();
-
+    
         // Create the invoice
         $invoice = Invoice::create([
             'client_id' => $client->id,
             'sum' => $sum,
             'status' => $request->status ?? 'pending',
         ]);
-
+    
         // Add invoice items
         foreach ($request->description as $index => $description) {
             if (!empty($description) && isset($request->amount[$index])) {
@@ -113,13 +118,13 @@ class InvoiceController extends Controller
                 ]);
             }
         }
-
+    
         // Log the action
         $this->logAction('create', $invoice->id);
-
+    
         return redirect()->route('invoices.index')->with('success', 'Invoice created successfully');
     }
-
+    
     /**
      * Display the details of a specific invoice.
      */

@@ -100,9 +100,27 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('invoices.index') }}">Manage Invoices</a></li>
+                            <li class="nav-item">
+                                @can('user-list') <!-- Replace 'role-list' with the actual permission key -->
+                                <a class="nav-link" href="{{ route('users.index') }}"> Users</a></li>
+                                @else
+                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> Users</a>
+                                @endcan
+                            </li>   
+                            <li class="nav-item">
+                                @can('role-list') 
+                                    <a class="nav-link" href="{{ route('roles.index') }}"> Roles</a>
+                                @else
+                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> Roles</a>
+                                @endcan
+                            </li>
+                            <li class="nav-item">
+                                @can('invoice-list')  
+                                    <a class="nav-link" href="{{ route('invoices.index') }}"> Invoices</a>
+                                @else
+                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> Invoices</a>
+                                @endcan
+                            </li>   
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

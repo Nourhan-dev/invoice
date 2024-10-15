@@ -64,13 +64,26 @@
         <td>{{ $invoice->sum }}</td>
         <td>{{ ucfirst($invoice->status) }}</td>
         <td>
-            <a class="btn btn-info btn-md" href="{{ route('invoices.show', $invoice->id) }}">Show</a>
+            @can('invoice-show')  
+            <a class="btn btn-primary btn-md" href="{{ route('invoices.show', $invoice->id) }}">Show</a>
+            @else
+            <a class="btn btn-primary btn-md disable" href="{{ route('invoices.show', $invoice->id) }}">Show</a>
+            @endcan
+            @can('invoice-edit')  
             <a class="btn btn-primary btn-md" href="{{ route('invoices.edit', $invoice->id) }}">Edit</a>
-            <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST" style="display:inline;">
+            @else
+            <a class="btn btn-primary btn-md disable" href="{{ route('invoices.edit', $invoice->id) }}">Edit</a>
+            @endcan
+            @can('invoice-delete')  
+             <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger btn-md">Delete</button>
             </form>
+            @else
+            <button type="submit" class="btn btn-danger btn-md" disabbled>Delete</button>
+             @endcan
+
         </td>
     </tr>
     @endforeach

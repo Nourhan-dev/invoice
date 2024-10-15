@@ -27,7 +27,7 @@
     @foreach ($roles as $key => $role)
     <tr>
         <td>{{ ++$i }}</td>
-        <td>         {{ $role->name }} ({{$role->guard_name}})</td>
+        <td>  {{ $role->name }} ({{$role->guard_name}})</td>
         <td>
             <a class="btn btn-info btn-sm" href="{{ route('roles.show',$role->id) }}"><i class="fa-solid fa-list"></i> Show</a>
             @can('role-edit')

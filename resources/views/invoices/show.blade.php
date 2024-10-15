@@ -5,12 +5,12 @@
     <div>
         <div class="card-header bg-dark text-white py-3">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 display-8"><i class="fas fa-file-invoice-dollar mr-2"></i> Invoice #{{ $invoice->id }}</h2>
+                <h2 class="mb-0 display-8 text-white"> Invoice #{{ $invoice->id }}</h2>
               
-                <span class="display-7 text-danger
+                <h5 class="display-7 text-danger
                     {{ $invoice->status == 'paid' ? 'badge-success' : ($invoice->status == 'pending' ? 'badge-warning' : 'badge-danger') }}">
                     {{ ucfirst($invoice->status) }}
-                </span>
+                </h5>
             </div>
         </div>
         <div class="card-body p-4">

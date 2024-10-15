@@ -34,14 +34,26 @@
           @endif
         </td>
         <td>
-             <a class="btn btn-info btn-sm" href="{{ route('users.show',$user->id) }}"><i class="fa-solid fa-list"></i> Show</a>
-             <a class="btn btn-primary btn-sm" href="{{ route('users.edit',$user->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-              <form method="POST" action="{{ route('users.destroy', $user->id) }}" style="display:inline">
-                  @csrf
-                  @method('DELETE')
+        @can('user-show')  
+        <a class="btn btn-info btn-sm" href="{{ route('users.show',$user->id) }}"><i class="fa-solid fa-list"></i> Show</a>
+            @else
+            <a class="btn btn-info btn-sm disable" href="{{ route('users.show',$user->id) }}"><i class="fa-solid fa-list"></i> Show</a>
+            @endcan
+            @can('user-edit')  
+            <a class="btn btn-primary btn-sm" href="{{ route('users.edit',$user->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            @else
+            <a class="btn btn-primary btn-sm disable" href="{{ route('users.edit',$user->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            @endcan
+            @can('user-delete')  
+            <form method="POST" action="{{ route('users.destroy', $user->id) }}" style="display:inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-md">Delete</button>
+            </form>
+            @else
+            <button type="submit" class="btn btn-danger btn-md" disabbled>Delete</button>
+             @endcan
 
-                  <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</button>
-              </form>
         </td>
     </tr>
  @endforeach
